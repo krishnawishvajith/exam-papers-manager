@@ -91,6 +91,11 @@
                             <span class="epm-checkmark"></span>
                             2015
                         </label>
+                        <label class="epm-checkbox-label">
+                            <input type="checkbox" name="year_of_paper" value="old" class="epm-checkbox">
+                            <span class="epm-checkmark"></span>
+                            Old
+                        </label>
                     </div>
                 </div>
             </div>

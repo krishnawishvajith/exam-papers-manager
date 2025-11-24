@@ -10,7 +10,7 @@
     <div class="epm-upload-container">
         <form id="exam-paper-upload-form" class="epm-upload-form" enctype="multipart/form-data">
             <?php wp_nonce_field('epm_admin_nonce', 'epm_nonce'); ?>
-            
+
             <div class="epm-form-grid">
                 <div class="epm-form-group">
                     <label for="title" class="epm-label">Document Title</label>
@@ -41,6 +41,7 @@
                         <option value="2017">2017</option>
                         <option value="2016">2016</option>
                         <option value="2015">2015</option>
+                        <option value="old">Old</option>
                     </select>
                 </div>
 
@@ -100,7 +101,7 @@
             global $wpdb;
             $table_name = $wpdb->prefix . 'exam_papers';
             $recent_papers = $wpdb->get_results("SELECT * FROM $table_name ORDER BY upload_date DESC LIMIT 5");
-            
+
             if ($recent_papers) {
                 foreach ($recent_papers as $paper) {
                     echo '<div class="epm-paper-item">';
