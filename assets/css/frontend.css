@@ -15,7 +15,7 @@
     --epm-border-light: #f3f4f6;
     --epm-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
     --epm-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --epm-radius: 8px;
+    --epm-radius: 28px;
     --epm-radius-lg: 12px;
 }
 
@@ -509,6 +509,101 @@
     font-size: 0.875rem;
 }
 
+/* ============================================
+   ENHANCED SEARCH BAR STYLES - NEW SECTION
+   ============================================ */
+
+/* Search within results input styling */
+.epm-search-results {
+    width: 100%;
+    padding: 0.75rem 3.5rem 0.75rem 1.25rem;
+    font-size: 0.9375rem;
+    border: 1px solid #8951d8;
+    border-radius: var(--epm-radius);
+    background: #f9fafb;
+    color: var(--epm-text);
+    transition: all 0.3s ease;
+    box-shadow: none;
+    margin-bottom: 0;
+}
+
+.epm-search-results::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+.epm-search-results:focus {
+    outline: none;
+    border-color: var(--epm-primary);
+    box-shadow: 0 0 0 3px rgba(17, 112, 181, 0.1);
+    background: white;
+}
+
+/* Wrapper for search with icon - positioned in results header */
+.epm-search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    margin-bottom: 0;
+}
+
+.epm-search-wrapper .epm-search-results {
+    padding-right: 3rem;
+    margin-bottom: 0;
+}
+
+.epm-search-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    font-size: 1.125rem;
+    pointer-events: none;
+}
+
+/* Make search icon darker on focus */
+.epm-search-wrapper:focus-within .epm-search-icon {
+    color: var(--epm-primary);
+}
+
+/* Loading state for search */
+.epm-search-wrapper.loading .epm-search-icon::before {
+    content: "⏳";
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Position search in results header */
+.epm-results-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.epm-results-info .epm-search-wrapper {
+    order: 2;
+    flex: 1;
+    max-width: 450px;
+}
+
+/* ============================================
+   END ENHANCED SEARCH BAR STYLES
+   ============================================ */
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .epm-container {
@@ -562,6 +657,15 @@
 
     .epm-filter-actions {
         flex-direction: row;
+    }
+
+    .epm-search-results {
+        font-size: 0.9375rem;
+        padding: 0.875rem 1.25rem;
+    }
+
+    .epm-search-wrapper .epm-search-results {
+        padding-right: 3rem;
     }
 }
 
