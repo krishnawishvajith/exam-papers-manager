@@ -108,31 +108,32 @@
                 </h3>
                 <div class="epm-filter-content active">
                     <div class="epm-filter-options">
+                        <?php
+                        global $wpdb;
+                        $table_name = $wpdb->prefix . 'exam_papers';
+                        
+                        // Define resource types
+                        $resource_types = array(
+                            'Question paper',
+                            'Mark schemes',
+                            'Examiners report',
+                            'Sample material',
+                            'Question papers'
+                        );
+                        
+                        // Get count for each resource type
+                        foreach ($resource_types as $type) {
+                            $count = $wpdb->get_var($wpdb->prepare(
+                                "SELECT COUNT(*) FROM $table_name WHERE resource_type = %s",
+                                $type
+                            ));
+                        ?>
                         <label class="epm-checkbox-label">
-                            <input type="checkbox" name="resource_type" value="Question paper" class="epm-checkbox">
+                            <input type="checkbox" name="resource_type" value="<?php echo esc_attr($type); ?>" class="epm-checkbox">
                             <span class="epm-checkmark"></span>
-                            Question paper (2190)
+                            <?php echo esc_html($type); ?> <span class="epm-resource-count">(<?php echo intval($count); ?>)</span>
                         </label>
-                        <label class="epm-checkbox-label">
-                            <input type="checkbox" name="resource_type" value="Mark schemes" class="epm-checkbox">
-                            <span class="epm-checkmark"></span>
-                            Mark schemes (15578)
-                        </label>
-                        <label class="epm-checkbox-label">
-                            <input type="checkbox" name="resource_type" value="Examiners report" class="epm-checkbox">
-                            <span class="epm-checkmark"></span>
-                            Examiners report (15578)
-                        </label>
-                        <label class="epm-checkbox-label">
-                            <input type="checkbox" name="resource_type" value="Sample material" class="epm-checkbox">
-                            <span class="epm-checkmark"></span>
-                            Sample material (234)
-                        </label>
-                        <label class="epm-checkbox-label">
-                            <input type="checkbox" name="resource_type" value="Question papers" class="epm-checkbox">
-                            <span class="epm-checkmark"></span>
-                            Question papers (15578)
-                        </label>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
