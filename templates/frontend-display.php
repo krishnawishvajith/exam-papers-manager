@@ -7,12 +7,12 @@
             </div>
 
             <div class="epm-filter-section">
-                <h3 class="epm-filter-title">
+                <h3 class="epm-filter-title active">
                     <span class="epm-filter-icon">📚</span>
                     Qualification
-                    <span class="epm-toggle">+</span>
+                    <span class="epm-toggle">−</span>
                 </h3>
-                <div class="epm-filter-content">
+                <div class="epm-filter-content active">
                     <div class="epm-filter-options">
                         <label class="epm-checkbox-label">
                             <input type="checkbox" name="qualification" value="AS Psychology" class="epm-checkbox">
@@ -29,12 +29,12 @@
             </div>
 
             <div class="epm-filter-section">
-                <h3 class="epm-filter-title active">
+                <h3 class="epm-filter-title">
                     <span class="epm-filter-icon">📅</span>
                     Year of past paper
-                    <span class="epm-toggle">−</span>
+                    <span class="epm-toggle">+</span>
                 </h3>
-                <div class="epm-filter-content active">
+                <div class="epm-filter-content">
                     <div class="epm-filter-options">
                         <label class="epm-checkbox-label">
                             <input type="checkbox" name="year_of_paper" value="2025" class="epm-checkbox">
@@ -101,17 +101,17 @@
             </div>
 
             <div class="epm-filter-section">
-                <h3 class="epm-filter-title active">
+                <h3 class="epm-filter-title">
                     <span class="epm-filter-icon">🎯</span>
                     Resource type
-                    <span class="epm-toggle">−</span>
+                    <span class="epm-toggle">+</span>
                 </h3>
-                <div class="epm-filter-content active">
+                <div class="epm-filter-content">
                     <div class="epm-filter-options">
                         <?php
                         global $wpdb;
                         $table_name = $wpdb->prefix . 'exam_papers';
-                        
+
                         // Define resource types
                         $resource_types = array(
                             'Question paper',
@@ -120,7 +120,7 @@
                             'Sample material',
                             'Question papers'
                         );
-                        
+
                         // Get count for each resource type
                         foreach ($resource_types as $type) {
                             $count = $wpdb->get_var($wpdb->prepare(
@@ -128,11 +128,11 @@
                                 $type
                             ));
                         ?>
-                        <label class="epm-checkbox-label">
-                            <input type="checkbox" name="resource_type" value="<?php echo esc_attr($type); ?>" class="epm-checkbox">
-                            <span class="epm-checkmark"></span>
-                            <?php echo esc_html($type); ?> <span class="epm-resource-count">(<?php echo intval($count); ?>)</span>
-                        </label>
+                            <label class="epm-checkbox-label">
+                                <input type="checkbox" name="resource_type" value="<?php echo esc_attr($type); ?>" class="epm-checkbox">
+                                <span class="epm-checkmark"></span>
+                                <?php echo esc_html($type); ?> <span class="epm-resource-count">(<?php echo intval($count); ?>)</span>
+                            </label>
                         <?php } ?>
                     </div>
                 </div>
@@ -178,7 +178,7 @@
                 global $wpdb;
                 $table_name = $wpdb->prefix . 'exam_papers';
                 $total_papers = $wpdb->get_var("SELECT COUNT(*) FROM $table_name");
-                $papers = $wpdb->get_results("SELECT * FROM $table_name ORDER BY upload_date DESC");
+                $papers = $wpdb->get_results("SELECT * FROM $table_name ORDER BY priority_order DESC, upload_date DESC");
 
                 if ($papers) {
                     foreach ($papers as $paper) {
