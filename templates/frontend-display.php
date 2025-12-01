@@ -109,31 +109,26 @@
                 <div class="epm-filter-content">
                     <div class="epm-filter-options">
                         <?php
-                        global $wpdb;
-                        $table_name = $wpdb->prefix . 'exam_papers';
-
-                        // Define resource types
+                        // Define resource types with dummy counts
                         $resource_types = array(
-                            'Question paper',
-                            'Mark schemes',
-                            'Examiners report',
-                            'Sample material',
-                            'Question papers'
+                            'Question paper' => 2190,
+                            'Mark schemes' => 15578,
+                            'Examiners report' => 15578,
+                            'Sample material' => 234,
+                            'Question papers' => 23,
+                            'Research Methods' => 25
                         );
 
-                        // Get count for each resource type
-                        foreach ($resource_types as $type) {
-                            $count = $wpdb->get_var($wpdb->prepare(
-                                "SELECT COUNT(*) FROM $table_name WHERE resource_type = %s",
-                                $type
-                            ));
+                        // Display resource types with dummy counts
+                        foreach ($resource_types as $type => $dummy_count) {
                         ?>
                             <label class="epm-checkbox-label">
                                 <input type="checkbox" name="resource_type" value="<?php echo esc_attr($type); ?>" class="epm-checkbox">
                                 <span class="epm-checkmark"></span>
-                                <?php echo esc_html($type); ?> <span class="epm-resource-count">(<?php echo intval($count); ?>)</span>
+                                <?php echo esc_html($type); ?> <span class="epm-resource-count">(<?php echo intval($dummy_count); ?>)</span>
                             </label>
                         <?php } ?>
+
                     </div>
                 </div>
             </div>
@@ -151,8 +146,8 @@
                         <div class="epm-pagination-info">
                             <span>Items per page:</span>
                             <select class="epm-items-per-page">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
                                 <option value="50">50</option>
                             </select>
                         </div>
