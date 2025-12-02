@@ -7,8 +7,23 @@ jQuery(document).ready(() => {
   // Declare variables before using them
   window.gtag =
     window.gtag ||
-    (() => {}) // Placeholder for gtag // Placeholder for gtag
+    (() => { }) // Placeholder for gtag // Placeholder for gtag
   window.epm_ajax = window.epm_ajax || {} // Placeholder for epm_ajax
+
+  // ===== CLEAR FILTERS ON PAGE REFRESH - START =====
+  // Remove saved filter state from localStorage
+  localStorage.removeItem('epm_filter_state');
+
+  // Uncheck all checkboxes and remove checked styling
+  $(".epm-checkbox").prop("checked", false).each(function () {
+    $(this).closest(".epm-checkbox-label").removeClass("checked");
+  });
+
+  // Reset items per page to default
+  $(".epm-items-per-page").val("15");
+
+  // Clear search input
+  $(".epm-search-results").val("");
 
   // Filter toggle functionality
   $(".epm-filter-title").on("click", function () {

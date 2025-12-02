@@ -57,26 +57,38 @@
                     </select>
                 </div>
 
-                <!-- NEW FIELD: Choose Paper to Prioritise -->
-                <div class="epm-form-group">
-                    <label for="prioritise_paper" class="epm-label">Choose Paper to Prioritise (Optional)</label>
-                    <select id="prioritise_paper" name="prioritise_paper" class="epm-select">
-                        <option value="">-- No Prioritisation --</option>
-                        <?php
-                        global $wpdb;
-                        $table_name = $wpdb->prefix . 'exam_papers';
-                        $existing_papers = $wpdb->get_results("SELECT id, title FROM $table_name ORDER BY upload_date DESC");
-                        
-                        if ($existing_papers) {
-                            foreach ($existing_papers as $existing_paper) {
-                                echo '<option value="' . esc_attr($existing_paper->id) . '">' . esc_html($existing_paper->title) . '</option>';
-                            }
-                        }
-                        ?>
-                    </select>
-                    <small style="color: #6b7280; font-size: 0.875rem; margin-top: 0.25rem; display: block;">
-                        Select an existing paper to place it at the top of the list. The newly uploaded paper will appear second.
+                <!-- PRIORITY SECTION - NEW SYSTEM FOR UP TO 10 PAPERS -->
+                <div class="epm-form-group" style="grid-column: 1 / -1;">
+                    <label class="epm-label">Paper Priority Order (Optional)</label>
+                    <small style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem; display: block;">
+                        The newly uploaded paper will appear at the top. Select existing papers below to set their priority order (2nd, 3rd, 4th, etc.)
                     </small>
+                    
+                    <?php
+                    global $wpdb;
+                    $table_name = $wpdb->prefix . 'exam_papers';
+                    $existing_papers = $wpdb->get_results("SELECT id, title FROM $table_name ORDER BY upload_date DESC");
+                    ?>
+
+                    <div id="priority-fields-container">
+                        <?php for ($i = 2; $i <= 11; $i++): ?>
+                        <div class="epm-priority-field" id="priority-field-<?php echo $i; ?>" style="margin-bottom: 0.75rem; <?php echo $i > 2 ? 'display: none;' : ''; ?>">
+                            <label for="priority_paper_<?php echo $i; ?>" style="font-size: 0.875rem; color: #374151; margin-bottom: 0.25rem; display: block;">
+                                Position <?php echo $i; ?>:
+                            </label>
+                            <select id="priority_paper_<?php echo $i; ?>" name="priority_papers[]" class="epm-select priority-select" data-position="<?php echo $i; ?>" style="width: 100%;">
+                                <option value="">-- No Prioritisation --</option>
+                                <?php
+                                if ($existing_papers) {
+                                    foreach ($existing_papers as $existing_paper) {
+                                        echo '<option value="' . esc_attr($existing_paper->id) . '">' . esc_html($existing_paper->title) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <?php endfor; ?>
+                    </div>
                 </div>
 
                 <div class="epm-form-group epm-file-upload-group">
@@ -146,3 +158,88 @@
         </div>
     </div>
 </div>
+
+<script>
+jQuery(document).ready(function($) {
+    // Priority fields cascading logic
+    $('.priority-select').on('change', function() {
+        const currentPosition = parseInt($(this).data('position'));
+        const selectedValue = $(this).val();
+        
+        // If a paper is selected, show the next field
+        if (selectedValue) {
+            const nextField = $('#priority-field-' + (currentPosition + 1));
+            if (nextField.length && currentPosition < 11) {
+                nextField.slideDown(300);
+            }
+            
+            // Remove selected paper from all subsequent dropdowns
+            updateAvailablePapers();
+        } else {
+            // If cleared, hide all subsequent fields and clear their values
+            for (let i = currentPosition + 1; i <= 11; i++) {
+                $('#priority-field-' + i).slideUp(300);
+                $('#priority_paper_' + i).val('');
+            }
+            updateAvailablePapers();
+        }
+    });
+    
+    // Update available papers in dropdowns based on selections
+    function updateAvailablePapers() {
+        const selectedPapers = [];
+        
+        // Collect all selected paper IDs
+        $('.priority-select').each(function() {
+            const val = $(this).val();
+            if (val) {
+                selectedPapers.push(val);
+            }
+        });
+        
+        // Update each dropdown
+        $('.priority-select').each(function() {
+            const currentSelect = $(this);
+            const currentValue = currentSelect.val();
+            
+            // Re-enable all options first
+            currentSelect.find('option').prop('disabled', false);
+            
+            // Disable already selected papers (except current selection)
+            selectedPapers.forEach(function(paperId) {
+                if (paperId !== currentValue) {
+                    currentSelect.find('option[value="' + paperId + '"]').prop('disabled', true);
+                }
+            });
+        });
+    }
+    
+    // Reset priority fields on form reset
+    $('button[type="reset"]').on('click', function() {
+        setTimeout(function() {
+            // Hide all priority fields except the first one
+            for (let i = 3; i <= 11; i++) {
+                $('#priority-field-' + i).hide();
+            }
+            // Clear all priority selections
+            $('.priority-select').val('');
+            updateAvailablePapers();
+        }, 10);
+    });
+});
+</script>
+
+<style>
+.epm-priority-field select:disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+}
+
+.epm-priority-field select option:disabled {
+    color: #9ca3af;
+}
+
+.epm-priority-field {
+    transition: all 0.3s ease;
+}
+</style>
