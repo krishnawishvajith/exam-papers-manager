@@ -20,7 +20,7 @@ jQuery(document).ready(() => {
   });
 
   // Reset items per page to default
-  $(".epm-items-per-page").val("15");
+  $(".epm-items-per-page").val("30");
 
   // Clear search input
   $(".epm-search-results").val("");
@@ -85,7 +85,7 @@ jQuery(document).ready(() => {
   // Initialize pagination
   function initializePagination() {
     const papers = $("#exam-papers-results .epm-paper-result")
-    const itemsPerPage = Number.parseInt($(".epm-items-per-page").val()) || 15
+    const itemsPerPage = Number.parseInt($(".epm-items-per-page").val()) || 30
     const totalPages = Math.ceil(papers.length / itemsPerPage)
 
     // Hide all papers first
@@ -142,7 +142,7 @@ jQuery(document).ready(() => {
 
   function navigateToPage(page) {
     const papers = $("#exam-papers-results .epm-paper-result")
-    const itemsPerPage = Number.parseInt($(".epm-items-per-page").val()) || 15
+    const itemsPerPage = Number.parseInt($(".epm-items-per-page").val()) || 30
     const totalPages = Math.ceil(papers.length / itemsPerPage)
 
     // Hide all papers
@@ -372,7 +372,7 @@ jQuery(document).ready(() => {
   const papers = $("#exam-papers-results .epm-paper-result")
   if (papers.length > 0) {
     // Show first 10 papers by default
-    const itemsPerPage = Number.parseInt($(".epm-items-per-page").val()) || 15
+    const itemsPerPage = Number.parseInt($(".epm-items-per-page").val()) || 30
     papers.hide()
     papers.slice(0, itemsPerPage).show()
   }
@@ -444,7 +444,7 @@ jQuery(document).ready(() => {
 
           // Show first page of results
           const papers = $("#exam-papers-results .epm-paper-result")
-          const itemsPerPage = Number.parseInt($(".epm-items-per-page").val()) || 15
+          const itemsPerPage = Number.parseInt($(".epm-items-per-page").val()) || 30
           papers.hide()
           papers.slice(0, itemsPerPage).show()
         } else {

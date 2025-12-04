@@ -166,7 +166,7 @@
                             <span>Items per page:</span>
                             <select class="epm-items-per-page">
                                 <option value="15">15</option>
-                                <option value="30">30</option>
+                                <option value="30" selected>30</option>
                                 <option value="50">50</option>
                             </select>
                         </div>
