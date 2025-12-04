@@ -5,7 +5,7 @@
  * Plugin URI: https://yourwebsite.com
  * Description: A comprehensive exam papers management system with filtering and document upload capabilities.
  * Version: 1.0.0
- * Author: JeyKrish
+ * Author: Krishna Wishvajith
  * License: GPL v2 or later
  */
 
