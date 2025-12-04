@@ -109,30 +109,49 @@
                 <div class="epm-filter-content">
                     <div class="epm-filter-options">
                         <?php
-                        // Define resource types with dummy counts
-                        $resource_types = array(
-                            'Question paper' => 2190,
-                            'Mark schemes' => 15578,
-                            'Examiners report' => 15578,
-                            'Sample material' => 234,
-                            'Question papers' => 23,
-                            'Research Methods' => 25
+                        // Get actual resource type counts from database
+                        global $wpdb;
+                        $table_name = $wpdb->prefix . 'exam_papers';
+
+                        $resource_counts = $wpdb->get_results(
+                            "SELECT resource_type, COUNT(*) as count 
+     FROM $table_name 
+     GROUP BY resource_type 
+     ORDER BY resource_type ASC"
                         );
 
-                        // Display resource types with dummy counts
-                        foreach ($resource_types as $type => $dummy_count) {
+                        // Create associative array for easier access
+                        $counts_array = array();
+                        foreach ($resource_counts as $row) {
+                            // Store without &nbsp; for matching
+                            $clean_type = str_replace('&nbsp;', '', $row->resource_type);
+                            $counts_array[$clean_type] = intval($row->count);
+                        }
+
+                        // Define all possible resource types (without &nbsp;)
+                        $all_resource_types = array(
+                            'Question paper',
+                            'Mark schemes',
+                            'Examiners report',
+                            'Sample material',
+                            'Research Methods'
+                        );
+
+                        // Display resource types with actual counts
+                        foreach ($all_resource_types as $type) {
+                            $count = isset($counts_array[$type]) ? $counts_array[$type] : 0;
+                            // Add &nbsp; only for display
+                            $display_type = $type . '&nbsp;';
                         ?>
                             <label class="epm-checkbox-label">
                                 <input type="checkbox" name="resource_type" value="<?php echo esc_attr($type); ?>" class="epm-checkbox">
                                 <span class="epm-checkmark"></span>
-                                <?php echo esc_html($type); ?> <span class="epm-resource-count">(<?php echo intval($dummy_count); ?>)</span>
+                                <?php echo esc_html($display_type); ?> <span class="epm-resource-count">(<?php echo $count; ?>)</span>
                             </label>
                         <?php } ?>
-
                     </div>
                 </div>
             </div>
-
             <div class="epm-filter-actions">
                 <button class="epm-btn epm-btn-secondary epm-clear-filters">Clear All</button>
             </div>

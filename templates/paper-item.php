@@ -18,10 +18,10 @@
                     <?php echo esc_html($paper->resource_type); ?>
                 </span>
             </div>
-            <div class="epm-paper-year"><?php echo esc_html($paper->year_of_paper); ?></div>
+            <div class="epm-paper-year">Year <?php echo esc_html($paper->year_of_paper); ?></div>
         </div>
     </div>
-    
+
     <!-- Replaced button elements with simple text links -->
     <div class="epm-paper-actions">
         <a href="<?php echo esc_url($paper->file_url); ?>" target="_blank" class="epm-link-view">
