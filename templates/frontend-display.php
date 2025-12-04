@@ -111,24 +111,22 @@
                         <?php
                         // Define resource types with dummy counts
                         $resource_types = array(
-                            'Question paper' => 2190,
-                            'Mark schemes' => 15578,
-                            'Examiners report' => 15578,
-                            'Sample material' => 234,
-                            'Question papers' => 23,
-                            'Research Methods' => 25
+                            'Question paper&nbsp;' => 2190,
+                            'Mark schemes&nbsp;' => 15578,
+                            '<span style="font-size: 1rem">Examiners report&nbsp;</span>' => 15578,
+                            'Sample material&nbsp;' => 234,
+                            'Research Methods&nbsp;' => 25
                         );
 
                         // Display resource types with dummy counts
                         foreach ($resource_types as $type => $dummy_count) {
                         ?>
                             <label class="epm-checkbox-label">
-                                <input type="checkbox" name="resource_type" value="<?php echo esc_attr($type); ?>" class="epm-checkbox">
+                                <input type="checkbox" name="resource_type" value="<?php echo esc_attr(strip_tags($type)); ?>" class="epm-checkbox">
                                 <span class="epm-checkmark"></span>
-                                <?php echo esc_html($type); ?> <span class="epm-resource-count">(<?php echo intval($dummy_count); ?>)</span>
+                                <?php echo $type; ?> <span class="epm-resource-count">(<?php echo intval($dummy_count); ?>)</span>
                             </label>
                         <?php } ?>
-
                     </div>
                 </div>
             </div>
