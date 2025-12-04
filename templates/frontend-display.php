@@ -109,7 +109,6 @@
                 <div class="epm-filter-content">
                     <div class="epm-filter-options">
                         <?php
-<<<<<<< HEAD
                         // Get actual resource type counts from database
                         global $wpdb;
                         $table_name = $wpdb->prefix . 'exam_papers';
@@ -119,15 +118,6 @@
      FROM $table_name 
      GROUP BY resource_type 
      ORDER BY resource_type ASC"
-=======
-                        // Define resource types with dummy counts
-                        $resource_types = array(
-                            'Question paper&nbsp;' => 2190,
-                            'Mark schemes&nbsp;' => 15578,
-                            '<span style="font-size: 1rem">Examiners report&nbsp;</span>' => 15578,
-                            'Sample material&nbsp;' => 234,
-                            'Research Methods&nbsp;' => 25
->>>>>>> e8f5d0eef70cdce8cffc19f7a06caa90aa2ff0fc
                         );
 
                         // Create associative array for easier access
@@ -154,13 +144,9 @@
                             $display_type = $type . '&nbsp;';
                         ?>
                             <label class="epm-checkbox-label">
-                                <input type="checkbox" name="resource_type" value="<?php echo esc_attr(strip_tags($type)); ?>" class="epm-checkbox">
+                                <input type="checkbox" name="resource_type" value="<?php echo esc_attr($type); ?>" class="epm-checkbox">
                                 <span class="epm-checkmark"></span>
-<<<<<<< HEAD
                                 <?php echo esc_html($display_type); ?> <span class="epm-resource-count">(<?php echo $count; ?>)</span>
-=======
-                                <?php echo $type; ?> <span class="epm-resource-count">(<?php echo intval($dummy_count); ?>)</span>
->>>>>>> e8f5d0eef70cdce8cffc19f7a06caa90aa2ff0fc
                             </label>
                         <?php } ?>
                     </div>
@@ -180,7 +166,7 @@
                             <span>Items per page:</span>
                             <select class="epm-items-per-page">
                                 <option value="15">15</option>
-                                <option value="30" selected>30</option>
+                                <option value="30">30</option>
                                 <option value="50">50</option>
                             </select>
                         </div>
