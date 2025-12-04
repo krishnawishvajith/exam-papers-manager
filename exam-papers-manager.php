@@ -208,10 +208,10 @@ class ExamPapersManager
             wp_die('Insufficient permissions');
         }
 
-        $title = sanitize_text_field($_POST['title']);
-        $qualification = sanitize_text_field($_POST['qualification']);
-        $year_of_paper = sanitize_text_field($_POST['year_of_paper']);
-        $resource_type = sanitize_text_field($_POST['resource_type']);
+        $title = sanitize_text_field(wp_unslash($_POST['title']));
+        $qualification = sanitize_text_field(wp_unslash($_POST['qualification']));
+        $year_of_paper = sanitize_text_field(wp_unslash($_POST['year_of_paper']));
+        $resource_type = sanitize_text_field(wp_unslash($_POST['resource_type']));
 
         // Get priority papers array
         $priority_papers = isset($_POST['priority_papers']) && is_array($_POST['priority_papers'])
@@ -455,10 +455,10 @@ class ExamPapersManager
         }
 
         $paper_id = intval($_POST['paper_id']);
-        $title = sanitize_text_field($_POST['title']);
-        $qualification = sanitize_text_field($_POST['qualification']);
-        $year_of_paper = sanitize_text_field($_POST['year_of_paper']);
-        $resource_type = sanitize_text_field($_POST['resource_type']);
+        $title = sanitize_text_field(wp_unslash($_POST['title']));
+        $qualification = sanitize_text_field(wp_unslash($_POST['qualification']));
+        $year_of_paper = sanitize_text_field(wp_unslash($_POST['year_of_paper']));
+        $resource_type = sanitize_text_field(wp_unslash($_POST['resource_type']));
 
         global $wpdb;
         $table_name = $wpdb->prefix . 'exam_papers';
