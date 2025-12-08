@@ -52,6 +52,7 @@ class ExamPapersManager
         add_action('wp_ajax_filter_admin_papers', array($this, 'filter_admin_papers'));
         add_action('wp_ajax_export_exam_papers', array($this, 'export_exam_papers'));
         add_action('wp_ajax_export_selected_papers', array($this, 'export_selected_papers'));
+        add_action('wp_ajax_reorder_exam_papers', array($this, 'reorder_exam_papers')); // Add AJAX handler for reordering papers
 
         // Add shortcode
         add_shortcode('exam_papers_display', array($this, 'display_exam_papers_shortcode'));
@@ -584,7 +585,6 @@ class ExamPapersManager
             echo '<td>' . esc_html($paper->qualification) . '</td>';
             echo '<td>' . esc_html($paper->year_of_paper) . '</td>';
             echo '<td>' . esc_html($paper->resource_type) . '</td>';
-            echo '<td>' . date('Y/m/d', strtotime($paper->upload_date)) . '</td>';
             echo '<td class="epm-actions-column">';
             echo '<a href="' . esc_url($paper->file_url) . '" target="_blank" class="epm-action-btn epm-btn-view" title="View">👁️</a>';
             echo '<a href="#" onclick="editPaper(' . $paper->id . ')" class="epm-action-btn epm-btn-edit" title="Edit">✏️</a>';
@@ -685,6 +685,74 @@ class ExamPapersManager
 
         fclose($output);
         exit;
+    }
+
+    public function reorder_exam_papers()
+    {
+        if (!wp_verify_nonce($_POST['nonce'], 'epm_admin_nonce')) {
+            wp_die('Security check failed');
+        }
+
+        if (!current_user_can('manage_options')) {
+            wp_die('Insufficient permissions');
+        }
+
+        $paper_id = intval($_POST['paper_id']);
+        $direction = sanitize_text_field($_POST['direction']); // 'up' or 'down'
+
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'exam_papers';
+
+        // Get current paper's priority order
+        $current_paper = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $paper_id));
+
+        if (!$current_paper) {
+            wp_send_json_error('Paper not found');
+            return;
+        }
+
+        if ($direction === 'up') {
+            // Move up: get the paper with next highest priority
+            $swap_paper = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM $table_name WHERE priority_order > %d ORDER BY priority_order ASC LIMIT 1",
+                $current_paper->priority_order
+            ));
+        } else if ($direction === 'down') {
+            // Move down: get the paper with next lowest priority
+            $swap_paper = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM $table_name WHERE priority_order < %d ORDER BY priority_order DESC LIMIT 1",
+                $current_paper->priority_order
+            ));
+        } else {
+            wp_send_json_error('Invalid direction');
+            return;
+        }
+
+        if (!$swap_paper) {
+            wp_send_json_error('Cannot reorder - already at the boundary');
+            return;
+        }
+
+        // Swap the priority orders
+        $temp_priority = $current_paper->priority_order;
+        
+        $wpdb->update(
+            $table_name,
+            array('priority_order' => $swap_paper->priority_order),
+            array('id' => $current_paper->id),
+            array('%d'),
+            array('%d')
+        );
+
+        $wpdb->update(
+            $table_name,
+            array('priority_order' => $temp_priority),
+            array('id' => $swap_paper->id),
+            array('%d'),
+            array('%d')
+        );
+
+        wp_send_json_success('Paper position updated successfully');
     }
 }
 

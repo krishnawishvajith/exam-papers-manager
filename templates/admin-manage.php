@@ -47,6 +47,7 @@
                         <th class="manage-column">Year</th>
                         <th class="manage-column">Type</th>
                         <th class="manage-column">Upload Date</th>
+                        <th class="manage-column" style="width: 80px;">Position</th>
                         <th class="manage-column">Actions</th>
                     </tr>
                 </thead>
@@ -72,6 +73,12 @@
                             echo '<td>' . esc_html($paper->year_of_paper) . '</td>';
                             echo '<td>' . esc_html($paper->resource_type) . '</td>';
                             echo '<td>' . date('Y/m/d', strtotime($paper->upload_date)) . '</td>';
+                            echo '<td class="epm-position-column">';
+                            echo '<div class="epm-position-controls">';
+                            echo '<button type="button" class="epm-position-btn epm-btn-move-up" onclick="movePaperUp(' . $paper->id . ')" title="Move Up" data-paper-id="' . $paper->id . '">↑</button>';
+                            echo '<button type="button" class="epm-position-btn epm-btn-move-down" onclick="movePaperDown(' . $paper->id . ')" title="Move Down" data-paper-id="' . $paper->id . '">↓</button>';
+                            echo '</div>';
+                            echo '</td>';
                             echo '<td class="epm-actions-column">';
                             echo '<a href="' . esc_url($paper->file_url) . '" target="_blank" class="epm-action-btn epm-btn-view" title="View">👁️</a>';
                             echo '<a href="#" onclick="editPaper(' . $paper->id . ')" class="epm-action-btn epm-btn-edit" title="Edit">✏️</a>';
@@ -80,7 +87,7 @@
                             echo '</tr>';
                         }
                     } else {
-                        echo '<tr><td colspan="7" class="epm-no-papers-row">No exam papers found. <a href="' . admin_url('admin.php?page=exam-papers-upload') . '">Upload your first paper</a></td></tr>';
+                        echo '<tr><td colspan="8" class="epm-no-papers-row">No exam papers found. <a href="' . admin_url('admin.php?page=exam-papers-upload') . '">Upload your first paper</a></td></tr>';
                     }
                     ?>
                 </tbody>
@@ -192,6 +199,14 @@ function clearFilters() {
 
 function applyBulkAction() {
     // Implementation for bulk actions
+}
+
+function movePaperUp(paperId) {
+    // Implementation for moving paper up
+}
+
+function movePaperDown(paperId) {
+    // Implementation for moving paper down
 }
 
 // Modal functionality
